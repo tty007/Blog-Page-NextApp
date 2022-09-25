@@ -1,0 +1,22 @@
+.text {
+  padding: 20px;
+  border: solid 2px currentColor;
+  color: darkblue;
+}
+
+.color {
+  color: lightpink;
+}
+
+.textPastelDotted {
+  composes: text color;
+  border-style: dotted;
+}
+
+.text :global .title {
+  font-size: 80px;
+}
+
+.text :global(.subtitle) {
+  font-size: 20px;
+}
