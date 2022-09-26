@@ -19,10 +19,10 @@
 
   /* スペース */
   --space-xs: clamp(1.25rem, 1rem + 0.98vw, 1.875rem);
-  --space-sm: calc(var(var(--space-xs) * 1.5));
-  --space-md: calc(var(var(--space-xs) * 2));
-  --space-lg: calc(var(var(--space-xs) * 3));
-  --space-xl: calc(var(var(--space-xs) * 4));
+  --space-sm: calc(var(--space-xs) * 1.5);
+  --space-md: calc(var(--space-xs) * 2);
+  --space-lg: calc(var(--space-xs) * 3);
+  --space-xl: calc(var(--space-xs) * 4);
   --space-jump: clamp(1.25rem, 0.35rem + 3.8vw, 3.75rem);
 }
 

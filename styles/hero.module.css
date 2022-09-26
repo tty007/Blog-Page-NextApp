@@ -1,4 +1,21 @@
 .text {
+  padding-top: calc(var(--display) * 0.5);
+  padding-bottom: calc(var(--display) * 0.7);
+}
+
+.title {
+  font-size: var(--display);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.subtitle {
+  font-size: var(--small-heading2);
+}
+
+
+
+/* .text {
   padding: 20px;
   border: solid 2px currentColor;
   color: darkblue;
@@ -19,4 +36,4 @@
 
 .text :global(.subtitle) {
   font-size: 20px;
-}
+} */
