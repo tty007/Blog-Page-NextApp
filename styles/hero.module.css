@@ -1,3 +1,7 @@
+.flexContainer {
+  composes: sideBySideCenter from 'styles/utils.module.css';
+}
+
 .text {
   padding-top: calc(var(--display) * 0.5);
   padding-bottom: calc(var(--display) * 0.7);
@@ -13,27 +17,13 @@
   font-size: var(--small-heading2);
 }
 
-
-
-/* .text {
-  padding: 20px;
-  border: solid 2px currentColor;
-  color: darkblue;
+/* image */
+.image {
+  width: 100%;
 }
 
-.color {
-  color: lightpink;
+@media (min-width: 768px) {
+  .image {
+    width: 50%;
+  }
 }
-
-.textPastelDotted {
-  composes: text color;
-  border-style: dotted;
-}
-
-.text :global .title {
-  font-size: 80px;
-}
-
-.text :global(.subtitle) {
-  font-size: 20px;
-} */
