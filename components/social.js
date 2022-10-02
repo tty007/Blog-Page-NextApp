@@ -7,7 +7,7 @@ import {
   faGithub
 } from '@fortawesome/free-brands-svg-icons'
 
-export default function Social({ iconSize='initial' }) {
+export default function Social({ iconSize = 'initial' }) {
   return (
     <ul className={styles.list} style={{ '--icon-size': iconSize }}>
       <li>
