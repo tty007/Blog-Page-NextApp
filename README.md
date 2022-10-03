@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.jsにおけるページ表示について
 
-## Getting Started
+## SG(静的生成)とSSG(サーバーサイドレンダリング)
+それぞれデータを取得するタイミングが異なる
 
-First, run the development server:
+### SG(Static Generation: 静的生成)
+- ビルド時に必要なデータを取得してページをプリレンダリング
+- データの更新はできない
+- ビルド時にでページを生成するため、ビルドに時間がかかるが、プリレンダリング済のものを返すだけなのでリクエストに対する表示は爆速
 
-```bash
-npm run dev
-# or
-yarn dev
+### SSR(Server Side Rendering)
+- リクエストされた際にデータを取得してそれをもとにプリレンダリグ
+- 常に最新のデータでページが構成される
+- ビルドの時間は必要ないが、リクエスト毎に全ての処理が行われるため、SGより表示は遅い
+
+## プリレンダリングのタイミング
+### SSR
+ページのリクエスト時
+### SG
+ビルドを実行した時
+### fallback
+最初にページがリクエストされた時
+### ISR(Incremental Static Regeneration)
+指定時間経過したあとにページがリクエストされた時
+### On-demand ISR(On-demand Revalidation)
+レスポンスヘルパーである`unstable_revalidate`関数が実行されたタイミング
+
+
+## getStaticPropsとgetServerSidePropsについて
+Next.jsでSGやSSRを実現するには、ページコンポーネントと合わせて`getStaticProps`や`getServerSideProps`をエクスポートする。
+
+- `getStaticProps`: SG
+- `getServerSideProps`: SSR
+
+## getStaticPathsについて
+`getStaticPaths`は`getStaticProps`とセットで使うために用意された関数
+`getStaticPaths`の中に、Dynamic Routesから渡されるオブジェクトと同様のものを用意しておくと、ビルドの際にcontextを通じて`getStaticProps`に渡されてプリレンダリングが行われる。
+slug（`[slug].js`）を利用したダイナミックルーティング時に使われる。
+
+```
+export async fundtion getStaticPaths() {
+  return {
+    paths: [{ parms: {slug: 'page1'} },{ params: {slug: 'page2'} }],
+    fallback: false
+  }
+}
+
+export async function getStaticProps(context) {
+  //
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`fallback`は`paths`にないURLに対する処理を指定する。falseの場合ページはないものとして404エラーを返し、trueの場合はデータがない状態でページを表示し、バックグラウンドでデータを取得後にJSONを作成、クライアントへ送信しページを完成させる。blockingの場合、プリレンダリングを済ませてからページを送る処理となる。
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## ISRの設定
+ISRの設定は`getStaticProps`で行う。返り値オブジェクトの中で`revalidate`を使って時間を指定する。指定した時間が経ったあとのリクエストでプリレンダリングが行われ、ページが更新される。fallbackとは無関係に設定できる。
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# どのような方法でどのようにサイトを構成するか？
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Next.jsではSG,SSRどちらでもサイト構築が可能であるが、基本的にはSG側に`getstaticPaths`の設定があるだけである。そのため、基本的なJumstack構成でSGで作成するのが王道。
 
-## Learn More
+## Jamstackとは
+Jamstackとは、Javascript, API, プリレンダリングされたMarkup(HTML)で構成されたサイトやアプリを作成するモダンなアーキテクチャ。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
