@@ -3,6 +3,7 @@ import Container from 'components/container'
 import PostHeader from 'components/post-header'
 import PostBody from 'components/post-body' 
 import ConvertBody from 'components/convert-body'
+import PostCategories from 'components/post-categories'
 import Image from 'next/image'
 import { TwoColumn, TwoColumnMain, TwoColumnSidebar } from 'components/two-column'
 
@@ -36,7 +37,9 @@ export default function Schedule({
               <ConvertBody contentHTML={content} />
             </PostBody>
           </TwoColumnMain>
-          <TwoColumnSidebar></TwoColumnSidebar>
+          <TwoColumnSidebar>
+            <PostCategories categories={categories} />
+          </TwoColumnSidebar>
         </TwoColumn>
       </article>
     </Container>
